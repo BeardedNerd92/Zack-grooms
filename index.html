@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zack Grooms — Backend Systems Engineer</title>
+
+  <meta name="description" content="Backend systems engineer building from first principles: state, invariants, transactions, idempotence.">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="container">
+
+    <header>
+      <h1>Zack Grooms</h1>
+      <p class="tagline">
+        Backend systems engineer building from first principles:
+        state, invariants, transactions, idempotence, correctness.
+
+      </p>
+
+      <div class="links">
+        <a href="https://github.com/BeardedNerd92" target="_blank">GitHub</a>
+        <a href="https://www.linkedin.com/in/zack-grooms/" target="_blank">LinkedIn</a>
+        <a href="https://dev.to/grooms_nicholas" target="_blank">Dev.to</a>
+        <a href="mailto:youremail@email.com">Email</a>
+      </div>
+    </header>
+
+    <section class="card">
+      <h2>Current Project</h2>
+
+      <p>
+        <strong>Inventory System v2 — Django + SQLite</strong><br>
+        Building a backend system focused on correctness before complexity.
+      </p>
+
+      <h3>Architecture</h3>
+      <pre>transport → service → model → database</pre>
+
+      <ul>
+        <li>Service layer owns transactions</li>
+        <li>Model layer enforces invariants</li>
+        <li>Idempotent endpoints</li>
+        <li>Retry-safe design</li>
+      </ul>
+
+      <h3>System Model</h3>
+      <pre>
+S = Map[id → item]
+item = { id, name, qty }
+S' = f(S, input)
+      </pre>
+
+      <h3>Endpoints</h3>
+      <ul>
+        <li>POST /items</li>
+        <li>DELETE /items/&lt;id&gt; (idempotent)</li>
+        <li>Next: atomic qty updates</li>
+      </ul>
+
+      <div class="project-links">
+        <a class="button" href="https://github.com/BeardedNerd92/inventory-systemv2" target="_blank">
+          View Repository
+        </a>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Engineering Log</h2>
+
+      <p class="muted">
+        Daily system-building notes and lessons learned.
+      </p>
+
+      <div class="log">
+        <div class="log-entry">
+          <span class="date">Feb 2026</span>
+          Implemented idempotent delete using
+          <code>filter(id=item_id).delete()</code>
+          inside <code>transaction.atomic()</code>.
+          Fixed state bug caused by incorrect filtering.
+        </div>
+      </div>
+
+      <div class="project-links">
+        <a class="button secondary" href="https://dev.to/grooms_nicholas" target="_blank">
+          Read Dev Logs
+        </a>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>About</h2>
+
+      <p>
+        I focus on backend systems engineering: correctness,
+        invariants, and designing around state.
+      </p>
+
+      <p class="muted">
+        Father of four. Engineering student.
+        Building one feature per day and documenting the process.
+      </p>
+    </section>
+
+    <footer>
+      <p>© 2026 Zack Grooms</p>
+    </footer>
+
+  </div>
+</body>
+</html>
