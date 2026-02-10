@@ -57,9 +57,10 @@ S' = f(S, input)
       <h3>Endpoints</h3>
       <ul>
         <li>POST /items</li>
-        <li>DELETE /items/&lt;id&gt; (idempotent)</li>
-        <li>Next: atomic qty updates</li>
+        <li>DELETE /items/&lt;uuid&gt; (idempotent)</li>
+        <li>PATCH /items/&lt;uuid&gt;/qty (atomic delta update)</li>
       </ul>
+
 
       <div class="project-links">
         <a class="button" href="https://github.com/BeardedNerd92/inventory-systemv2" target="_blank">
@@ -83,7 +84,19 @@ S' = f(S, input)
           inside <code>transaction.atomic()</code>.
           Fixed state bug caused by incorrect filtering.
         </div>
+
+        <div class="log-entry">
+          <span class="date">Feb 2026</span>
+          Implemented atomic quantity update endpoint
+          <code>PATCH /items/&lt;uuid&gt;/qty</code>.
+          Used guarded database update with
+          <code>qty__gte=-delta</code> and
+          <code>F("qty") + delta</code>
+          to ensure invariant preservation and
+          correctness under concurrency.
+        </div>
       </div>
+
 
       <div class="project-links">
         <a class="button secondary" href="https://dev.to/grooms_nicholas" target="_blank">
