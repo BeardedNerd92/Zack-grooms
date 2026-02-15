@@ -1,128 +1,173 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>Zack Grooms — Backend Systems Engineer</title>
+  <meta name="description" content="Backend systems engineer building from first principles: state, invariants, transactions, idempotence, correctness." />
 
-  <meta name="description" content="Backend systems engineer building from first principles: state, invariants, transactions, idempotence.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
+  <a class="skip" href="#main">Skip to content</a>
+
   <div class="container">
 
-    <header>
-      <h1>Zack Grooms</h1>
-      <p class="tagline">
-        Backend systems engineer building from first principles:
-        state, invariants, transactions, idempotence, correctness.
+    <!-- HERO -->
+    <header class="hero">
+      <div class="hero-top">
+        <div>
+          <h1>Zack Grooms</h1>
+          <p class="tagline">
+            Backend systems engineer focused on correctness:
+            state, invariants, transactions, idempotence.
+          </p>
+        </div>
 
-      </p>
+        <nav class="links">
+          <a href="https://github.com/BeardedNerd92" target="_blank">GitHub</a>
+          <a href="https://www.linkedin.com/in/zack-grooms/" target="_blank">LinkedIn</a>
+          <a href="https://medium.com/@nzack92" target="_blank">Medium</a>
+          <a href="mailto:nzackgrooms@gmail.com">Email</a>
+        </nav>
+      </div>
 
-      <div class="links">
-        <a href="https://github.com/BeardedNerd92" target="_blank">GitHub</a>
-        <a href="https://www.linkedin.com/in/zack-grooms/" target="_blank">LinkedIn</a>
-        <a href="https://dev.to/grooms_nicholas" target="_blank">Dev.to</a>
-        <a href="mailto:youremail@email.com">Email</a>
+      <div class="hero-bottom">
+        <div class="callout">
+          <div class="callout-title">Current focus</div>
+          <div class="callout-body">
+            Building <strong>CountIQ</strong> as a systems lab:
+            invariants → logging → Docker → AWS deployment.
+          </div>
+        </div>
+
+        <div class="mini">
+          <div class="mini-title">Core mental model</div>
+          <pre class="mono">S = Map[id → item]
+S' = f(S, input)</pre>
+          <p class="muted small">
+            Current state + request → new state (or unchanged state on failure).
+          </p>
+        </div>
       </div>
     </header>
 
-    <section class="card">
-      <h2>Current Project</h2>
+    <main id="main">
 
-      <p>
-        <strong>Inventory System v2 — Django + SQLite</strong><br>
-        Building a backend system focused on correctness before complexity.
-      </p>
+      <!-- PROJECT -->
+      <section class="card">
+        <div class="card-head">
+          <h2>Current Project</h2>
+          <p class="muted">CountIQ — Django backend</p>
+        </div>
 
-      <h3>Architecture</h3>
-      <pre>transport → service → model → database</pre>
+        <p>
+          A backend system built for predictable mutation and correctness under concurrency.
+        </p>
 
-      <ul>
-        <li>Service layer owns transactions</li>
-        <li>Model layer enforces invariants</li>
-        <li>Idempotent endpoints</li>
-        <li>Retry-safe design</li>
-      </ul>
+        <div class="grid">
+          <div class="block">
+            <h3>Architecture</h3>
+            <pre class="mono">interface → transport → service → domain → database</pre>
+            <ul>
+              <li>Service layer owns transactions</li>
+              <li>Domain layer enforces invariants</li>
+              <li>Idempotent endpoints</li>
+              <li>Retry-safe design</li>
+            </ul>
+          </div>
 
-      <h3>System Model</h3>
-      <pre>
-S = Map[id → item]
+          <div class="block">
+            <h3>System Model</h3>
+            <pre class="mono">S = Map[id → item]
 item = { id, name, qty }
-S' = f(S, input)
-      </pre>
-
-      <h3>Endpoints</h3>
-      <ul>
-        <li>POST /items</li>
-        <li>DELETE /items/&lt;uuid&gt; (idempotent)</li>
-        <li>PATCH /items/&lt;uuid&gt;/qty (atomic delta update)</li>
-      </ul>
-
-
-      <div class="project-links">
-        <a class="button" href="https://github.com/BeardedNerd92/inventory-systemv2" target="_blank">
-          View Repository
-        </a>
-      </div>
-    </section>
-
-    <section class="card">
-      <h2>Engineering Log</h2>
-
-      <p class="muted">
-        Daily system-building notes and lessons learned.
-      </p>
-
-      <div class="log">
-        <div class="log-entry">
-          <span class="date">Feb 2026</span>
-          Implemented idempotent delete using
-          <code>filter(id=item_id).delete()</code>
-          inside <code>transaction.atomic()</code>.
-          Fixed state bug caused by incorrect filtering.
+S' = f(S, input)</pre>
+            <p class="muted small">
+              Endpoints are state transitions. Tests prove failures don’t mutate state.
+            </p>
+          </div>
         </div>
 
-        <div class="log-entry">
-          <span class="date">Feb 2026</span>
-          Implemented atomic quantity update endpoint
-          <code>PATCH /items/&lt;uuid&gt;/qty</code>.
-          Used guarded database update with
-          <code>qty__gte=-delta</code> and
-          <code>F("qty") + delta</code>
-          to ensure invariant preservation and
-          correctness under concurrency.
+        <h3>Endpoints</h3>
+        <ul class="endpoints">
+          <li><span class="pill">POST</span> <code>/items</code></li>
+          <li><span class="pill">DELETE</span> <code>/items/&lt;uuid&gt;</code> <span class="muted">(idempotent)</span></li>
+          <li><span class="pill">PATCH</span> <code>/items/&lt;uuid&gt;/qty</code> <span class="muted">(atomic delta update)</span></li>
+        </ul>
+
+        <div class="actions">
+          <a class="btn" href="https://github.com/BeardedNerd92/inventory-systemv2" target="_blank">
+            View Repository
+          </a>
         </div>
-      </div>
+      </section>
 
+      <!-- ENGINEERING LOG -->
+      <section class="card">
+        <div class="card-head">
+          <h2>Engineering Log</h2>
+          <p class="muted">Recent system work</p>
+        </div>
 
-      <div class="project-links">
-        <a class="button secondary" href="https://dev.to/grooms_nicholas" target="_blank">
-          Read Dev Logs
-        </a>
-      </div>
-    </section>
+        <div class="log">
+          <div class="log-entry">
+            <div class="log-meta">
+              <span class="date">Feb 2026</span>
+              <span class="dot"></span>
+              <span class="label">Idempotent delete</span>
+            </div>
+            <p>
+              Implemented idempotent delete inside
+              <code>transaction.atomic()</code>. Fixed state bug caused by filtering error.
+            </p>
+          </div>
 
-    <section class="card">
-      <h2>About</h2>
+          <div class="log-entry">
+            <div class="log-meta">
+              <span class="date">Feb 2026</span>
+              <span class="dot"></span>
+              <span class="label">Atomic qty update</span>
+            </div>
+            <p>
+              Added guarded update using <code>qty__gte=-delta</code> and
+              <code>F("qty") + delta</code> to preserve invariants under concurrency.
+            </p>
+          </div>
+        </div>
+      </section>
 
-      <p>
-        I focus on backend systems engineering: correctness,
-        invariants, and designing around state.
-      </p>
+      <!-- ABOUT -->
+      <section class="card">
+        <div class="card-head">
+          <h2>About</h2>
+          <p class="muted">Systems-first backend engineering</p>
+        </div>
 
-      <p class="muted">
-        Father of four. Engineering student.
-        Building one feature per day and documenting the process.
-      </p>
-    </section>
+        <p>
+          I focus on building backend systems that behave predictably:
+          clear invariants, centralized mutation, and observable behavior.
+        </p>
 
-    <footer>
-      <p>© 2026 Zack Grooms</p>
+        <p class="muted">
+          Father of four. Engineering student. Building one system layer at a time.
+        </p>
+      </section>
+
+    </main>
+
+    <footer class="footer">
+      <p>© <span id="year"></span> Zack Grooms</p>
     </footer>
-
   </div>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
